@@ -18,10 +18,14 @@ export default function App(): JSX.Element {
           const response = await axios.get('http://192.168.1.136:5000/api/auth/verify-token', {
             headers: { Authorization: `Bearer ${token}` },
           });
-          console.log('Token verification response:', response.status);
+          console.log('Token verification response:', response.status, response.data);
           setIsAuthenticated(response.status === 200);
         } catch (error) {
-          console.error('Failed to verify token.', error);
+          if (axios.isAxiosError(error)) {
+            console.error('Failed to verify token.', error.message, error.response?.status, error.response?.data);
+          } else {
+            console.error('Failed to verify token.', error);
+          }
           setIsAuthenticated(false);
         }
       } else {

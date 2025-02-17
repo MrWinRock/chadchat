@@ -4,20 +4,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    justifyContent: "center",
+    marginTop: 24,
     padding: 16,
   },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 12,
-    paddingHorizontal: 8,
+  headerContainer: {
+    alignItems: "flex-start",
   },
-  button: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    padding: 10,
+  logo: {
+    width: 125,
+    height: 125,
+  },
+  chatContainer: {
+    flex: 1,
+    width: "100%",
+    marginHorizontal: "auto",
+    marginVertical: 20,
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  createContainer: {
+    position: "relative",
+    bottom: 0,
+    right: 0,
+  },
+  createButton: {
+    aspectRatio: 1,
+    width: 80,
+    borderRadius: 20,
+    backgroundColor: "#1caa60",
+  },
+  createIcon: {
+    alignSelf: "center",
+    marginVertical: 15,
+    position: "absolute",
   },
 });
 

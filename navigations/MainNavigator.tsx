@@ -35,7 +35,7 @@ export default function MainNavigator() {
 
                     return (
                         <View style={route.name === 'Chat' ? iconStyle : {}}>
-                            <Ionicons name={iconName} size={route.name === 'Chat' ? size * 2.2 : size * 1.2} color={color} />
+                            <Ionicons name={iconName} size={size * 1.4} color={color} />
                         </View>
                     );
                 },
