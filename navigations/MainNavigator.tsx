@@ -1,12 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ChatScreen from '../screens/ChatScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import MessageScreen from '../screens/MessageScreen';
+import CreateScreen from '../screens/CreateScreen';
 import { View } from 'react-native';
+import { RootStackParamList } from '../types/RootStackParamList';
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
+
+function ChatStack() {
+    return (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Chat" component={ChatScreen} />
+            <Stack.Screen name="Message" component={MessageScreen} />
+            <Stack.Screen name="Create" component={CreateScreen} />
+        </Stack.Navigator>
+    );
+}
 
 export default function MainNavigator() {
     const [username, setUsername] = useState('');
@@ -14,7 +29,7 @@ export default function MainNavigator() {
     useEffect(() => {
         const fetchUsername = async () => {
             const storedUsername = await AsyncStorage.getItem('username');
-            setUsername(storedUsername || '');
+            setUsername(storedUsername || 'Profile');
         };
 
         fetchUsername();
@@ -27,14 +42,14 @@ export default function MainNavigator() {
                     let iconName: keyof typeof Ionicons.glyphMap = 'timer-outline';
                     let iconStyle = {};
 
-                    if (route.name === 'Chat') {
+                    if (route.name === 'ChatTab') {
                         iconName = 'chatbubble-outline';
                     } else if (route.name === 'Profile') {
                         iconName = 'person-outline';
                     }
 
                     return (
-                        <View style={route.name === 'Chat' ? iconStyle : {}}>
+                        <View style={route.name === 'ChatTab' ? iconStyle : {}}>
                             <Ionicons name={iconName} size={size * 1.4} color={color} />
                         </View>
                     );
@@ -53,10 +68,10 @@ export default function MainNavigator() {
                 },
                 headerShown: false
             })}
-            initialRouteName="Chat"
+            initialRouteName="ChatTab"
         >
-            <Tab.Screen name="Chat" component={ChatScreen} />
-            <Tab.Screen name="Profile" component={ProfileScreen} />
+            <Tab.Screen name="ChatTab" component={ChatStack} />
+            <Tab.Screen name={username || 'Profile'} component={ProfileScreen} />
         </Tab.Navigator>
     );
 }

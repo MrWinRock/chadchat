@@ -31,8 +31,9 @@ export default function LoginScreen({ navigation }: Props) {
             const response = await axios.post('http://192.168.1.136:5000/api/auth/login', payload);
 
             if (response.status === 200) {
-                const { token } = response.data;
+                const { token, userId } = response.data;
                 await AsyncStorage.setItem('token', token);
+                await AsyncStorage.setItem('userId', userId);
                 console.log('Login successful!');
                 navigation.navigate('Main');
             } else {

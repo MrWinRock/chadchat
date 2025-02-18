@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthNavigator from './navigations/AuthNavigator';
-import MainNavigator from './navigations/MainNavigator'; // Ensure this path is correct and the file exists
+import MainNavigator from './navigations/MainNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -19,7 +19,18 @@ export default function App(): JSX.Element {
             headers: { Authorization: `Bearer ${token}` },
           });
           console.log('Token verification response:', response.status, response.data);
-          setIsAuthenticated(response.status === 200);
+          if (response.status === 200) {
+            const { userId } = response.data;
+            console.log('Retrieved userId:', userId);
+            if (userId) {
+              await AsyncStorage.setItem('userId', userId);
+              setIsAuthenticated(true);
+            } else {
+              setIsAuthenticated(false);
+            }
+          } else {
+            setIsAuthenticated(false);
+          }
         } catch (error) {
           if (axios.isAxiosError(error)) {
             console.error('Failed to verify token.', error.message, error.response?.status, error.response?.data);

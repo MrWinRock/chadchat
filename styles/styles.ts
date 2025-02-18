@@ -22,22 +22,49 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
   },
-  createContainer: {
-    position: "relative",
-    bottom: 0,
-    right: 0,
+  createButtonContainer: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
   },
   createButton: {
     aspectRatio: 1,
     width: 80,
     borderRadius: 20,
     backgroundColor: "#1caa60",
+    justifyContent: "center",
+    alignItems: "center",
   },
   createIcon: {
     alignSelf: "center",
-    marginVertical: 15,
     position: "absolute",
   },
+  createChatInput: {
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginVertical: 10,
+  },
+  createChatButton: {
+    backgroundColor: "#1caa60",
+    borderRadius: 5,
+    padding: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  chatCardContainer: {
+    width: "100%",
+    padding: 16,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 4,
+  },
+  cardLeft: {
+    gap: 8,
+  },
+  cardRight: {},
 });
 
 export default styles;
