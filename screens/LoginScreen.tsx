@@ -32,10 +32,15 @@ export default function LoginScreen({ navigation }: Props) {
 
             if (response.status === 200) {
                 const { token, userId } = response.data;
-                await AsyncStorage.setItem('token', token);
-                await AsyncStorage.setItem('userId', userId);
-                console.log('Login successful!');
-                navigation.navigate('Main');
+                if (token && userId) {
+                    await AsyncStorage.setItem('token', token);
+                    await AsyncStorage.setItem('userId', userId);
+                    console.log('Login successful!');
+                    navigation.navigate('Main');
+                } else {
+                    console.error('Token or userId is missing in the response.');
+                    setShowError(true);
+                }
             } else {
                 console.error('Response status:', response.status);
                 setShowError(true);

@@ -15,7 +15,7 @@ export default function App(): JSX.Element {
       console.log('Retrieved token:', token);
       if (token) {
         try {
-          const response = await axios.get('http://192.168.1.136:5000/api/auth/verify-token', {
+          const response = await axios.get('http://localhost:5000/api/auth/verify-token', {
             headers: { Authorization: `Bearer ${token}` },
           });
           console.log('Token verification response:', response.status, response.data);

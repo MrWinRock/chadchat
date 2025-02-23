@@ -65,6 +65,15 @@ export default function ChatScreen() {
         socket.on('receiveMessage', (message: MessageData) => {
             console.log('Received message:', message);
             // Update the chat list or specific chat with the new message
+            setChats((prevChats) => {
+                const updatedChats = prevChats.map((chat) => {
+                    if (chat.chatId === message.chatId) {
+                        return { ...chat, timestamp: new Date().toISOString() };
+                    }
+                    return chat;
+                });
+                return updatedChats;
+            });
         });
 
         return () => {
@@ -94,7 +103,7 @@ export default function ChatScreen() {
     const onRefresh = async () => {
         setRefreshing(true);
         try {
-            const response = await axios.get(`http://192.168.1.136:5000/api/chat-list/${username}`);
+            const response = await axios.get(`http://192.168.1.136:5000/api/chat/chat-list/${username}`);
             setChats(response.data);
         } catch (error) {
             console.error('Failed to fetch chats:', error);

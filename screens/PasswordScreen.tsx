@@ -75,6 +75,8 @@ export default function PasswordScreen({ navigation }: Props) {
             const phone = await AsyncStorage.getItem('phone');
             const username = await AsyncStorage.getItem('username');
 
+            console.log("Sending registration data:", { email, phone, username, password });
+
             const response = await axios.post('http://192.168.1.136:5000/api/auth/register', {
                 email,
                 phone,
@@ -82,14 +84,18 @@ export default function PasswordScreen({ navigation }: Props) {
                 password,
             });
 
+            console.log("Registration response:", response);
+
             if (response.status === 201) {
                 navigation.navigate('Login');
             } else {
                 console.error('Failed to submit data.');
+                setShowError(true);
             }
         } catch (e) {
             console.error('Failed to save password or submit data.', e);
             alert('Network error. Please try again later.');
+            setShowError(true);
         }
     };
 
