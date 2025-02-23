@@ -8,4 +8,5 @@ export type RootStackParamList = {
   Create: undefined;
   Message: { chatId: string; receiver: string };
   Chat: undefined;
+  Profile: undefined;
 };

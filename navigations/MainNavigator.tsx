@@ -39,7 +39,7 @@ export default function MainNavigator() {
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
-                    let iconName: keyof typeof Ionicons.glyphMap = 'timer-outline';
+                    let iconName: keyof typeof Ionicons.glyphMap = 'person-outline';
                     let iconStyle = {};
 
                     if (route.name === 'ChatTab') {

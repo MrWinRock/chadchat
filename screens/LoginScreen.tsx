@@ -35,6 +35,7 @@ export default function LoginScreen({ navigation }: Props) {
                 if (token && userId) {
                     await AsyncStorage.setItem('token', token);
                     await AsyncStorage.setItem('userId', userId);
+                    await AsyncStorage.setItem('username', username);
                     console.log('Login successful!');
                     navigation.navigate('Main');
                 } else {

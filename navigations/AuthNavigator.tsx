@@ -12,7 +12,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 export default function AuthNavigator() {
     return (
-        <Stack.Navigator initialRouteName="Email" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Email" component={EmailScreen} />
             <Stack.Screen name="Phone" component={PhoneScreen} />
             <Stack.Screen name="Username" component={UsernameScreen} />

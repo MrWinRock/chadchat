@@ -20,6 +20,7 @@ interface ChatData {
     _id: string;
     chatId: string;
     receiver: string;
+    lastMessage: string;
     timestamp: string;
 }
 
@@ -68,7 +69,7 @@ export default function ChatScreen() {
             setChats((prevChats) => {
                 const updatedChats = prevChats.map((chat) => {
                     if (chat.chatId === message.chatId) {
-                        return { ...chat, timestamp: new Date().toISOString() };
+                        return { ...chat, lastMessage: message.message, timestamp: new Date().toISOString() };
                     }
                     return chat;
                 });
@@ -112,6 +113,10 @@ export default function ChatScreen() {
         }
     };
 
+    const truncateMessage = (message: string) => {
+        return message.length > 30 ? message.substring(0, 30) + '...' : message;
+    };
+
     return (
         <View style={{ flex: 1 }}>
             <ScrollView
@@ -128,8 +133,8 @@ export default function ChatScreen() {
                         <ChatCard
                             key={chat._id}
                             name={chat.receiver}
-                            message=""
-                            time={new Date(chat.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}
+                            message={truncateMessage(chat.lastMessage)}
+                            time={new Date(chat.timestamp).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', hour12: false })}
                             onPress={() => handleChatPress(chat.chatId, chat.receiver)}
                         />
                     ))}
