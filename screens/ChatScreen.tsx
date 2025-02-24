@@ -20,8 +20,8 @@ interface ChatData {
     _id: string;
     chatId: string;
     receiver: string;
-    lastMessage: string;
-    timestamp: string;
+    lastMessage?: string;
+    timestamp?: string;
 }
 
 const socket = io('http://192.168.1.136:5000');
@@ -47,8 +47,9 @@ export default function ChatScreen() {
             const fetchChats = async () => {
                 try {
                     const response = await axios.get(`http://192.168.1.136:5000/api/chat/chat-list/${username}`);
-                    setChats(response.data);
-                    console.log('Fetched chats:', response.data);
+                    const sortedChats = response.data.sort((a: ChatData, b: ChatData) => new Date(b.timestamp || '').getTime() - new Date(a.timestamp || '').getTime());
+                    setChats(sortedChats);
+                    console.log('Fetched and sorted chats:', sortedChats);
                 } catch (error) {
                     console.error('Failed to fetch chats: ', error);
                 }
@@ -65,7 +66,6 @@ export default function ChatScreen() {
 
         socket.on('receiveMessage', (message: MessageData) => {
             console.log('Received message:', message);
-            // Update the chat list or specific chat with the new message
             setChats((prevChats) => {
                 const updatedChats = prevChats.map((chat) => {
                     if (chat.chatId === message.chatId) {
@@ -73,7 +73,7 @@ export default function ChatScreen() {
                     }
                     return chat;
                 });
-                return updatedChats;
+                return updatedChats.sort((a, b) => new Date(b.timestamp || '').getTime() - new Date(a.timestamp || '').getTime());
             });
         });
 
@@ -105,7 +105,8 @@ export default function ChatScreen() {
         setRefreshing(true);
         try {
             const response = await axios.get(`http://192.168.1.136:5000/api/chat/chat-list/${username}`);
-            setChats(response.data);
+            const sortedChats = response.data.sort((a: ChatData, b: ChatData) => new Date(b.timestamp || '').getTime() - new Date(a.timestamp || '').getTime());
+            setChats(sortedChats);
         } catch (error) {
             console.error('Failed to fetch chats:', error);
         } finally {
@@ -113,8 +114,14 @@ export default function ChatScreen() {
         }
     };
 
-    const truncateMessage = (message: string) => {
+    const truncateMessage = (message?: string) => {
+        if (!message) return '';
         return message.length > 30 ? message.substring(0, 30) + '...' : message;
+    };
+
+    const formatTime = (timestamp?: string) => {
+        if (!timestamp) return '';
+        return new Date(timestamp).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', hour12: false });
     };
 
     return (
@@ -134,7 +141,7 @@ export default function ChatScreen() {
                             key={chat._id}
                             name={chat.receiver}
                             message={truncateMessage(chat.lastMessage)}
-                            time={new Date(chat.timestamp).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                            time={formatTime(chat.timestamp)}
                             onPress={() => handleChatPress(chat.chatId, chat.receiver)}
                         />
                     ))}

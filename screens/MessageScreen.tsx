@@ -92,6 +92,18 @@ export default function MessageScreen({ route }: MessageScreenProps) {
         }
     };
 
+    const formatTimestamp = (timestamp: string) => {
+        const messageDate = new Date(timestamp);
+        const today = new Date();
+        const isToday = messageDate.toDateString() === today.toDateString();
+
+        if (isToday) {
+            return messageDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
+        } else {
+            return `${messageDate.getDate().toString().padStart(2, '0')}/${(messageDate.getMonth() + 1).toString().padStart(2, '0')} ${messageDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false })}`;
+        }
+    };
+
     return (
         <View style={{ flex: 1, marginTop: 30 }}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={{ padding: 10 }}>
@@ -108,7 +120,9 @@ export default function MessageScreen({ route }: MessageScreenProps) {
                             ]}
                         >
                             <Text style={styles.messageText}>{msg.message}</Text>
-                            <Text style={[msg.sender === username ? styles.messageTimestampSent : styles.messageTimestampReceived,]}>{new Date(msg.timestamp).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', hour12: false })}</Text>
+                            <Text style={[msg.sender === username ? styles.messageTimestampSent : styles.messageTimestampReceived,]}>
+                                {formatTimestamp(msg.timestamp)}
+                            </Text>
                         </View>
                     ))}
                 </View>

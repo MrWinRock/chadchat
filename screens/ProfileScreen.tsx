@@ -26,6 +26,7 @@ export default function ProfileScreen() {
             setPhone(response.data.phone);
         } catch (error) {
             console.error('Failed to fetch user info:', error);
+            Alert.alert('Error', 'Failed to fetch user info');
         }
     };
 
