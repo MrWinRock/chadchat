@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import AuthNavigator from './navigations/AuthNavigator';
 import MainNavigator from './navigations/MainNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from './services/api';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
@@ -15,7 +16,7 @@ export default function App(): JSX.Element {
       console.log('Retrieved token:', token);
       if (token) {
         try {
-          const response = await axios.get('http://192.168.1.136:5000/api/auth/verify-token', {
+          const response = await api.get('/api/auth/verify-token', {
             headers: { Authorization: `Bearer ${token}` },
           });
           console.log('Token verification response:', response.status, response.data);

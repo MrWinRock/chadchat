@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView, View, TouchableOpacity, Image, RefreshControl } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import api from '../services/api';
 import io from 'socket.io-client';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../types/RootStackParamList';
@@ -46,7 +46,7 @@ export default function ChatScreen() {
         if (username) {
             const fetchChats = async () => {
                 try {
-                    const response = await axios.get(`http://192.168.1.136:5000/api/chat/chat-list/${username}`);
+                    const response = await api.get(`/api/chat/chat-list/${username}`);
                     const sortedChats = response.data.sort((a: ChatData, b: ChatData) => new Date(b.timestamp || '').getTime() - new Date(a.timestamp || '').getTime());
                     setChats(sortedChats);
                     console.log('Fetched and sorted chats:', sortedChats);
@@ -104,7 +104,7 @@ export default function ChatScreen() {
     const onRefresh = async () => {
         setRefreshing(true);
         try {
-            const response = await axios.get(`http://192.168.1.136:5000/api/chat/chat-list/${username}`);
+            const response = await api.get(`/api/chat/chat-list/${username}`);
             const sortedChats = response.data.sort((a: ChatData, b: ChatData) => new Date(b.timestamp || '').getTime() - new Date(a.timestamp || '').getTime());
             setChats(sortedChats);
         } catch (error) {

@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Image, KeyboardAvoidingView, P
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import api from '../services/api';
 import authStyles from '../styles/authStyles';
 
 type RootStackParamList = {
@@ -77,7 +77,7 @@ export default function PasswordScreen({ navigation }: Props) {
 
             console.log("Sending registration data:", { email, phone, username, password });
 
-            const response = await axios.post('http://192.168.1.136:5000/api/auth/register', {
+            const response = await api.post('/api/auth/register', {
                 email,
                 phone,
                 username,
@@ -101,7 +101,6 @@ export default function PasswordScreen({ navigation }: Props) {
 
     return (
         <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={{ flex: 1 }}
         >
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { View, Text, ScrollView, TextInput, TouchableOpacity } from "react-native";
 import io from "socket.io-client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import api, { socketUrl } from "../services/api";
 import axios from "axios";
 import styles from "../styles/styles";
 import { RouteProp, useNavigation } from '@react-navigation/native';
@@ -16,7 +17,7 @@ interface MessageData {
     timestamp: string;
 }
 
-const socket = io('http://192.168.1.136:5000');
+const socket = io(socketUrl || '');
 
 interface MessageScreenProps {
     route: RouteProp<RootStackParamList, 'Message'>;
@@ -38,7 +39,7 @@ export default function MessageScreen({ route }: MessageScreenProps) {
 
         const fetchMessages = async () => {
             try {
-                const response = await axios.get(`http://192.168.1.136:5000/api/chat/messages/${chatId}`);
+                const response = await api.get(`/api/chat/messages/${chatId}`);
                 setMessages(response.data);
                 setTimeout(() => {
                     scrollViewRef.current?.scrollToEnd({ animated: false });

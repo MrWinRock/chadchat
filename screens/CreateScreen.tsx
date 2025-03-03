@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
-import axios from "axios";
+import api from "../services/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from '@react-navigation/native';
 import styles from "../styles/styles";
@@ -18,7 +18,7 @@ export default function CreateScreen() {
             }
 
             const participants = [username, chatName];
-            const response = await axios.post('http://192.168.1.136:5000/api/chat/create-chat', { participants });
+            const response = await api.post('/api/chat/create-chat', { participants });
 
             if (response.status === 201 || response.status === 200) {
                 Alert.alert('Success', 'Chat created successfully');

@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import api from '../services/api';
 import authStyles from '../styles/authStyles';
 import { RootStackParamList } from '../types/RootStackParamList';
 
@@ -28,7 +28,7 @@ export default function LoginScreen({ navigation }: Props) {
             };
             console.log('Request payload:', payload);
 
-            const response = await axios.post('http://192.168.1.136:5000/api/auth/login', payload);
+            const response = await api.post('/api/auth/login', payload);
 
             if (response.status === 200) {
                 const { token, userId } = response.data;

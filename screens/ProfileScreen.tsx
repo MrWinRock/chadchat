@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView, Image, RefreshControl, TouchableOpacity, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ProfileCard from "../components/ProfileCard";
-import axios from "axios";
+import api from "../services/api";
 import styles from "../styles/styles";
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -20,7 +20,7 @@ export default function ProfileScreen() {
     const fetchUserInfo = async () => {
         try {
             const userId = await AsyncStorage.getItem('userId');
-            const response = await axios.get(`http://192.168.1.136:5000/api/user/info/${userId}`);
+            const response = await api.get(`/api/user/info/${userId}`);
             setUsername(response.data.username);
             setEmail(response.data.email);
             setPhone(response.data.phone);
@@ -37,7 +37,7 @@ export default function ProfileScreen() {
     const handleLogout = async () => {
         try {
             const userId = await AsyncStorage.getItem('userId');
-            const response = await axios.post('http://192.168.1.136:5000/api/auth/logout', { userId });
+            const response = await api.post('/api/auth/logout', { userId });
 
             if (response.status === 200) {
                 await AsyncStorage.clear();
