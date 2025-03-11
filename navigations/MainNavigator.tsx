@@ -7,7 +7,7 @@ import ChatScreen from '../screens/ChatScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import MessageScreen from '../screens/MessageScreen';
 import CreateScreen from '../screens/CreateScreen';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { RootStackParamList } from '../types/RootStackParamList';
 
 const Tab = createBottomTabNavigator();
@@ -24,12 +24,12 @@ function ChatStack() {
 }
 
 export default function MainNavigator() {
-    const [username, setUsername] = useState('');
+    const [username, setUsername] = useState<string>('Profile');
 
     useEffect(() => {
         const fetchUsername = async () => {
             const storedUsername = await AsyncStorage.getItem('username');
-            setUsername(storedUsername || 'Profile');
+            if (storedUsername) setUsername(storedUsername);
         };
 
         fetchUsername();
@@ -38,19 +38,21 @@ export default function MainNavigator() {
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
-                tabBarIcon: ({ focused, color, size }) => {
+                tabBarIcon: ({ color, size }) => {
                     let iconName: keyof typeof Ionicons.glyphMap = 'person-outline';
-                    let iconStyle = {};
 
-                    if (route.name === 'ChatTab') {
+                    if (route.name === 'Chat') {
                         iconName = 'chatbubble-outline';
-                    } else if (route.name === 'Profile') {
+                    } else {
                         iconName = 'person-outline';
                     }
 
                     return (
-                        <View style={route.name === 'ChatTab' ? iconStyle : {}}>
-                            <Ionicons name={iconName} size={size * 1.4} color={color} />
+                        <View style={{ alignItems: 'center' }}>
+                            <Ionicons name={iconName} size={size} color={color} />
+                            <Text style={{ color, fontSize: 14, marginTop: 2 }}>
+                                {route.name}
+                            </Text>
                         </View>
                     );
                 },
@@ -59,19 +61,15 @@ export default function MainNavigator() {
                 tabBarStyle: {
                     height: 70,
                     paddingTop: 7,
+                    flexDirection: 'column',
                 },
-                tabBarLabelStyle: {
-                    width: '100%',
-                    textAlign: 'center',
-                    fontSize: 12,
-                    fontFamily: 'Poppins_700Bold',
-                },
+                tabBarShowLabel: false,
                 headerShown: false
             })}
-            initialRouteName="ChatTab"
+            initialRouteName="Chat"
         >
-            <Tab.Screen name="ChatTab" component={ChatStack} />
-            <Tab.Screen name={username || 'Profile'} component={ProfileScreen} />
+            <Tab.Screen name="Chat" component={ChatStack} />
+            <Tab.Screen name={username} component={ProfileScreen} />
         </Tab.Navigator>
     );
 }
